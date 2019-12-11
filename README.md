@@ -1,22 +1,13 @@
 # fitb-app-firebase
 
 ## Project setup
+- install node packages
 ```
 npm install
 npm install firebase --save
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Replace with your Firebase configuration in `src/main.js`
+- replace with your Firebase configuration in `src/main.js`
 ```
 var firebaseConfig = {
   apiKey: "api-key",
@@ -27,6 +18,16 @@ var firebaseConfig = {
   messagingSenderId: "sender-id",
   appID: "app-id",
 };
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
 ```
 
 ### Compiles and hot-reloads for development
