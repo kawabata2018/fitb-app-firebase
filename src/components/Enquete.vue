@@ -2,7 +2,7 @@
     <div id="enquete">
         <div>
             <p class="enquete-title">1. 母語</p>
-            <p class="no-answer-message" v-if="!inputForm.enquete1">*この質問は必須です</p>
+            <p class="no-answer-message" v-if="!inputForm.enquete1 || (inputForm.enquete1=='その他'&&!inputForm.enquete1_other)">*この質問は必須です</p>
             <input type="radio" id="one" value="日本語" v-model="inputForm.enquete1">
             <label for="one">日本語</label>
             <br>
@@ -123,7 +123,12 @@ export default {
                 this.inputForm.enquete4 != "" &&
                 this.inputForm.enquete5 != "" &&
                 this.inputForm.enquete6 != "") {
-                    this.inputFormStatus = true
+                    if (this.inputForm.enquete1 == "その他" &&
+                    this.inputForm.enquete1_other == "") {
+                        this.inputFormStatus = false
+                    } else {
+                        this.inputFormStatus = true
+                    }
                 } else {
                     this.inputFormStatus = false
                 }

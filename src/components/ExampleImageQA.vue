@@ -53,7 +53,7 @@ export default {
             if (this.lang=="en"){
                 return "NOTE: DO NOT USE any outside sources: dictionaries, translation services, friends, etc."
             } else {
-                return "注意: 辞書や翻訳サービスを利用したりや知人に頼ったりしないでください"
+                return "注意: 辞書や翻訳サービス等を利用したり、知人に頼ったりしないでください"
             }
         }
     }

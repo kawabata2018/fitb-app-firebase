@@ -1,5 +1,6 @@
 <template>
     <div id="thanks">
+        <div id="image-block" v-if="uploadTask=='S'"><img v-bind:src="imageSrc"></div>
         <h2>{{message}}</h2>
     </div>
 </template>
@@ -9,20 +10,23 @@ import firebase from "firebase";
 
 export default {
     props: {
+        lang:String,
         query:String,
         ansdict:Object
     },
     data(){
         return {
-            message: "結果をサーバーにアップロード中です"
+            uploadTask: null,
+            imageSrc: "./assets/check.png",
         }
     },
     created(){
         let lang = this.ansdict[0]["回答"]["enquete1"];
         let lang_oth = this.ansdict[0]["回答"]["enquete1_other"];
+        let exp = this.ansdict[0]["回答"]["enquete2"];
         let kaisuu = this.ansdict[0]["回答"]["enquete6"];
         let nowtime = this.getNowtime();
-        let filename = lang+lang_oth+"-$"+kaisuu+"_"+nowtime+".json";
+        let filename = "$"+kaisuu+"-"+lang+lang_oth+"-"+exp+"_"+nowtime+".json";
         this.uploadJSON(this.ansdict, filename)
     },
     methods: {
@@ -62,15 +66,39 @@ export default {
                 }, function(error) {
                     console.log(error.code);
                     alert('結果がアップロードされませんでした\n[Error] '+error.code);
-                    res("結果のアップロードに失敗しました");
+                    res("F")
                 }, function() {
-                    console.log('Uploaded json file!');
-                    res("ご協力ありがとうございました！");
+                    console.log('Successfully uploaded');
+                    res("S")
                 })
             })
             promise.then((res) => {
-                this.message = res;
+                this.uploadTask = res;
+                console.log(this.uploadTask);
             })
+        }
+    },
+    computed: {
+        message: function(){
+            if (this.uploadTask=='F') {
+                if (this.lang=='en') {
+                    return "Failed to upload the data"
+                } else {
+                    return "結果のアップロードに失敗しました"
+                }
+            } else if (this.uploadTask=='S') {
+                if (this.lang=='en') {
+                    return "Thank you for your cooperation!"
+                } else {
+                    return "ご協力ありがとうございました！"
+                }
+            } else {
+                if (this.lang=='en') {
+                    return "Uploading. Please wait ..."
+                } else {
+                    return "結果をサーバーにアップロード中です"
+                }
+            }
         }
     }
 }
@@ -84,5 +112,20 @@ export default {
     font-size:1.2rem;
     font-weight:bold;
     color:red;
+}
+#image-block {
+    position:relative;
+    display:block;
+    margin:10px auto;
+    padding:10px;
+    max-width:90%;
+    height:20vh;
+}
+img {
+    position:absolute;
+    width:auto;
+    height:auto;
+    max-width:90%;
+    max-height:90%;
 }
 </style>

@@ -42,10 +42,11 @@ export default {
     this.query = query;
     // demo
     console.log("query:", this.query);
-    const csvPath = "./assets/"+query+".csv";
-    if (query != "demo") {
+    const dataset = ["demo", "s22525", "s22658", "ss22525", "ss22658", "val", "all"]
+    if (!dataset.includes(query)) {
       location.href = "error.html"
     }
+    const csvPath = "./assets/"+query+".csv";
     axios.get(csvPath).then(res => {
       this.mondaiSet = this.csv2array(res.data);
       this.totalNum = this.mondaiSet.length;
