@@ -6,7 +6,8 @@
         <div id="image-block"><img v-bind:src="imageSrc"></div>
         <p style="text-align:right; margin:0"><a href="http://mscoco.org" target="_blank">COCO dataset</a>の画像を使用</p>
         <div>
-            <div v-if="mondaiNum>40">
+            <div v-if="mondaiNum>40 || mondaiNum.slice(1)>40">
+            <!-- "41"や"v46"みたいなものは格助詞問題  -->
                 <p class="bold" v-if="lang=='ja'">が, で, に, の, を, のどれかで答えてください</p>
                 <p class="bold" v-if="lang=='en'">Select one from が, で, に, の or を</p>
             </div>
@@ -23,22 +24,19 @@
                 <input v-model="inputForm.answer_2" placeholder="回答を入力">
             </div>
         </div>
-        <Notes v-bind:lang="lang"></Notes>
+        <Notes></Notes>
     </div>
 </template>
 
 <script>
 import {bus} from "../main";
 import Notes from "./Notes.vue";
-
 export default {
     components: {
         Notes,
     },
     props: {
-        lang:String,
         mset:Array,
-        curnum:Number,
         ansdict:Object
     },
     data(){
@@ -64,6 +62,12 @@ export default {
         })
     },
     computed: {
+        lang: function(){
+            return this.$store.state.lang
+        },
+        curnum: function(){
+            return this.$store.state.currentNum
+        },
         mondaiNum: function(){
             return this.mset[this.curnum][0]
         },
@@ -103,7 +107,7 @@ export default {
             deep: true
         },
         inputFormStatus: function(){
-            bus.$emit('changestat', this.inputFormStatus);
+            this.$store.commit('changestat', this.inputFormStatus);
         }
     }
 }
@@ -113,11 +117,9 @@ export default {
 p {
     font-size:1rem;
 }
-
 span {
     color:#d83027;
 }
-
 img {
     position:absolute;
     width:auto;
@@ -129,7 +131,6 @@ img {
     margin:auto;
     border:1px solid #aaa;
 }
-
 input {
     font-size:1rem;
     height:20px;
@@ -139,11 +140,9 @@ input {
     border-radius:5px;
     border:1px solid #ccc;
 }
-
 #image-qa {
     position:relative;
 }
-
 #image-block {
     position:relative;
     display:block;
@@ -152,13 +151,11 @@ input {
     max-width:90%;
     height:40vh;
 }
-
 .caption-text {
     text-align:center;
     margin:0;
-    font-size:1.8rem;
+    font-size:1.5rem;
 }
-
 .bold {
     font-size:1.2rem;
     font-weight:bold;

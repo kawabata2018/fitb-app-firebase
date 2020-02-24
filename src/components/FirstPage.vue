@@ -2,7 +2,7 @@
     <div id="first-page">
         <Enquete v-if="lang=='ja'"></Enquete>
         <EnqueteEn v-if="lang=='en'"></EnqueteEn>
-        <ExampleImageQA v-bind:lang="lang"></ExampleImageQA>
+        <ExampleImageQA></ExampleImageQA>
     </div>
 </template>
 
@@ -10,7 +10,6 @@
 import Enquete from "./Enquete.vue";
 import EnqueteEn from "./EnqueteEn.vue";
 import ExampleImageQA from "./ExampleImageQA.vue";
-
 export default {
     components: {
         Enquete,
@@ -18,12 +17,15 @@ export default {
         ExampleImageQA
     },
     props: {
-        lang:String
     },
     data(){
         return {}
     },
-    
+    computed: {
+        lang: function(){
+            return this.$store.state.lang
+        }
+    }
 }
 </script>
 

@@ -4,7 +4,6 @@
 - install node packages
 ```
 npm install
-npm install firebase --save
 ```
 
 - replace with your Firebase configuration in `src/main.js`
@@ -39,6 +38,9 @@ npm run serve
 ```
 http://localhost:8090/?query=demo
 ```
+
+### Components structure
+![components](/public/components.png)
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

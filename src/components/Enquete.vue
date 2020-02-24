@@ -84,7 +84,6 @@
 
 <script>
 import {bus} from "../main";
-
 export default {
     components: {
     },
@@ -105,14 +104,26 @@ export default {
         }
     },
     created(){
-        bus.$on('pageNext', (curnum) => {
-            if (curnum==-1) {
-                bus.$emit('pushAnswer', [curnum+1, this.inputForm])
+        bus.$on('confirmLang', () => {
+            let result = window.confirm('母語は「'+this.bogo+'」で間違いないですか？');
+            if (result) {
+                bus.$emit('pushAnswer', [0, this.inputForm])
+                this.$store.dispatch('confirmRes');
             }
         })
     },
+    computed: {
+        bogo: function(){
+            if (this.inputForm.enquete1=="日本語") {
+                return "日本語";
+            } else {
+                return this.inputForm.enquete1_other;
+            }
+        }
+    },
     watch: {
         'inputForm.enquete2': function(v) {
+            // 全角数字を半角数字に
             this.inputForm.enquete2 = v.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) { return String.fromCharCode(s.charCodeAt(0) - 65248) })
         },
         inputForm: {
@@ -136,7 +147,7 @@ export default {
             deep: true
         },
         inputFormStatus: function(){
-            bus.$emit('changestat', this.inputFormStatus);
+            this.$store.commit('changestat', this.inputFormStatus)
         }
     }
 }
@@ -146,19 +157,15 @@ export default {
 #enquete {
     margin:0;
 }
-
 span {
     color:#d83027;
 }
-
 label {
     font-size:1.2rem;
 }
-
 input[type="radio"]{
     margin:8px;
 }
-
 .input-form {
     font-size:1rem;
     height:20px;
@@ -168,19 +175,15 @@ input[type="radio"]{
     border-radius:5px;
     border:1px solid #ccc;
 }
-
 .small-title {
     font-size:0.8rem;
 }
-
 .enquete-title {
     font-size:1.5rem;
 }
-
 .no-answer-input {
     background-color:#fce8e6;
 }
-
 .no-answer-message {
     color:#d83027;
 }

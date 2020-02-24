@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import { store } from './store'
 import firebase from 'firebase'
 
 export const bus = new Vue();
@@ -18,5 +19,6 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 new Vue({
+  store: store,
   render: h => h(App),
 }).$mount('#app')

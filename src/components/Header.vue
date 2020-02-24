@@ -30,8 +30,6 @@
 span {
     display:inline-block;
     margin-bottom:0;
-}
-span {
     font-size:30px;
 }
 </style>

@@ -1,11 +1,10 @@
 <template>
   <div id="app">
     <app-header></app-header>
-    <app-title v-bind:curnum="currentNum" v-bind:ttlnum="totalNum" v-bind:lang="lang"></app-title>
+    <app-title v-bind:ttlnum="totalNum"></app-title>
     <button @click="switchLang()">{{langBtn}}</button>
-    <router-view v-bind:mset="mondaiSet" v-bind:ansdict="answerDict" v-bind:curnum="currentNum" v-bind:ttlnum="totalNum"
-              v-bind:query="query" v-bind:lang="lang"></router-view>
-    <app-nav v-bind:mset="mondaiSet" v-bind:curnum="currentNum" v-bind:ttlnum="totalNum" v-bind:lang="lang"></app-nav>
+    <router-view v-bind:mset="mondaiSet" v-bind:ansdict="answerDict" v-bind:ttlnum="totalNum"></router-view>
+    <app-nav v-bind:mset="mondaiSet" v-bind:ttlnum="totalNum"></app-nav>
   </div>
 </template>
 
@@ -28,23 +27,32 @@ export default {
   },
   data(){
     return {
-      lang:"ja",
-      langBtn:"English",
-      currentNum:-1,
       mondaiSet:null,
       totalNum:null,
       answerDict:{}
     }
   },
+  computed: {
+    lang: function(){
+      return this.$store.state.lang
+    },
+    langBtn: function(){
+      if (this.lang=='ja') {
+        return "English"
+      } else {
+        return "日本語"
+      }
+    },
+  },
   created(){
     const url = new URL(location.href);
     const query = url.searchParams.get("query");
-    this.query = query;
-    // demo
-    console.log("query:", this.query);
+    // demo or s22525 or s22658 or ss22525 or ss22658 or val or all
     const dataset = ["demo", "s22525", "s22658", "ss22525", "ss22658", "val", "all"]
     if (!dataset.includes(query)) {
       location.href = "error.html"
+    } else {
+      this.$store.commit('setQuery', query);
     }
     const csvPath = "./assets/"+query+".csv";
     axios.get(csvPath).then(res => {
@@ -54,29 +62,16 @@ export default {
       for (let i=0;i<this.totalNum;i++) {
         this.answerDict[i+1] = {"問題":this.mondaiSet[i], "回答":null}
       }
-      console.log(this.answerDict)
+      // console.log(this.answerDict)
     }),
-    bus.$on('pageNext', (curnum) => {
-      this.currentNum = curnum+1;
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      })
-    })
     bus.$on('pushAnswer', (data) => {
       this.answerDict[data[0]]["回答"] = data[1];
-      console.log(this.answerDict);
+      // console.log(this.answerDict);
     })
   },
   methods: {
-    switchLang: function() {
-      if (this.lang=="ja") {
-        this.lang="en";
-        this.langBtn="日本語"
-      } else {
-        this.lang="ja";
-        this.langBtn="English"
-      }
+    switchLang: function(){
+      this.$store.commit('switchLang');
     },
     csv2array: function(str) {
       let array = new Array();

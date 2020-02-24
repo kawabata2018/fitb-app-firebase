@@ -21,19 +21,17 @@
         </div>
         <p class="notes-example">答えの例</p>
         <p style="font-size:1.2rem; text-align:center">くわえ</p>
-        <Notes v-bind:lang="lang"></Notes>
+        <Notes></Notes>
     </div>
 </template>
 
 <script>
 import Notes from "./Notes.vue";
-
 export default {
     components: {
         Notes
     },
     props: {
-        lang:String
     },
     data(){
         return {
@@ -42,6 +40,9 @@ export default {
         }
     },
     computed: {
+        lang: function(){
+            return this.$store.state.lang
+        },
         instruction: function(){
             if (this.lang=="en") {
                 return "Fiil in the blank to complete the sentence which best describes the image"
@@ -64,11 +65,9 @@ export default {
 p {
     font-size:1rem;
 }
-
 span {
     color:#d83027;
 }
-
 img {
     position:absolute;
     width:auto;
@@ -80,7 +79,6 @@ img {
     margin:auto;
     border:1px solid #aaa;
 }
-
 input {
     font-size:1rem;
     height:20px;
@@ -90,16 +88,13 @@ input {
     border-radius:5px;
     border:1px solid #ccc;
 }
-
 .bold {
     font-size:1.2rem;
     font-weight:bold;
 }
-
 #example-image-qa {
     position:relative;
 }
-
 #image-block {
     position:relative;
     display:block;
@@ -108,13 +103,11 @@ input {
     max-width:90%;
     height:40vh;
 }
-
 .caption-text {
     text-align:center;
     margin:0;
-    font-size:1.8rem;
+    font-size:1.5rem;
 }
-
 .notes-title {
     height:50px;
     margin:20px 0;
@@ -123,18 +116,15 @@ input {
     color:#fff;
     text-align:center;
 }
-
 .notes-example {
     font-size:1.5rem;
     background-color:#086019;
     color:#fff;
     text-align:center;
 }
-
 .no-answer-input {
     background-color:#fce8e6;
 }
-
 .no-answer-message {
     color:#d83027;
 }

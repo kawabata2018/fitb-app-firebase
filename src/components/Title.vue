@@ -7,8 +7,6 @@
 <script>
 export default {
     props: {
-        lang:String,
-        curnum:Number,
         ttlnum:Number
     },
     data(){
@@ -16,11 +14,15 @@ export default {
         }
     },
     computed: {
+        lang: function(){
+            return this.$store.state.lang
+        },
+        curnum: function(){
+            return this.$store.state.currentNum
+        },
         title: function(){
             if (this.lang=="en") {
-                if (this.curnum==-2){
-                    return "Consent to Collection of Personal Information and Composition Data"
-                } else if (this.curnum==-1){
+                if (this.curnum==-1){
                     return "Questionnaire"
                 } else if (this.curnum==this.ttlnum){
                     return "Thank you!"
@@ -28,9 +30,7 @@ export default {
                     return "Q"+(this.curnum+1)
                 }
             } else {
-                if (this.curnum==-2){
-                    return "穴埋め作文およびプロファイルデータ収集に関する同意"
-                } else if (this.curnum==-1){
+                if (this.curnum==-1){
                     return "アンケート"
                 } else if (this.curnum==this.ttlnum){
                     return "Thank you!"
@@ -48,10 +48,8 @@ span {
     font-size:20px;
     color:#ffffff;
 }
-
 #app-title {
     padding:20px;
     background-color:#086019;
 }
-
 </style>

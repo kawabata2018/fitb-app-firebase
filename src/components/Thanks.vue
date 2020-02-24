@@ -7,11 +7,8 @@
 
 <script>
 import firebase from "firebase";
-
 export default {
     props: {
-        lang:String,
-        query:String,
         ansdict:Object
     },
     data(){
@@ -79,6 +76,12 @@ export default {
         }
     },
     computed: {
+        lang: function(){
+            return this.$store.state.lang
+        },
+        query: function(){
+            return this.$store.state.query
+        },
         message: function(){
             if (this.uploadTask=='F') {
                 if (this.lang=='en') {

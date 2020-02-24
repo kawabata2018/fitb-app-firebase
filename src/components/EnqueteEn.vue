@@ -20,7 +20,7 @@
                     v-bind:class="{'no-answer-input':!inputForm.enquete2}" placeholder="Your answer">
         </div>
         <div>
-            <p class="enquete-title">3. JLPT(Japanese Language Proficiency Test) Level</p>
+            <p class="enquete-title">3. JLPT (Japanese Language Proficiency Test) Level</p>
             <p class="no-answer-message" v-if="!inputForm.enquete3">*This is a required question</p>
             <input type="radio" id="one" value="Not taken" v-model="inputForm.enquete3">
             <label for="one">Not taken</label>
@@ -53,7 +53,7 @@
             <label for="three">Other</label>
         </div>
         <div>
-            <p class="enquete-title">5. Have you ever been pointed out to have color vision deficiency?</p>
+            <p class="enquete-title">5. Has it ever been pointed out to you that you have color vision deficiency?</p>
             <p class="no-answer-message" v-if="!inputForm.enquete5">*This is a required question</p>
             <input type="radio" id="one" value="No" v-model="inputForm.enquete5">
             <label for="one">No</label>
@@ -84,7 +84,6 @@
 
 <script>
 import {bus} from "../main";
-
 export default {
     components: {
     },
@@ -104,15 +103,27 @@ export default {
             inputFormStatus:false
         }
     },
+    computed: {
+        bogo: function(){
+            if (this.inputForm.enquete1=="Japanese") {
+                return "日本語";
+            } else {
+                return this.inputForm.enquete1_other;
+            }
+        }
+    },
     created(){
-        bus.$on('pageNext', (curnum) => {
-            if (curnum==-1) {
-                bus.$emit('pushAnswer', [curnum+1, this.inputForm])
+        bus.$on('confirmLangEn', () => {
+            let result = window.confirm('Please confirm your mother tongue: "'+this.bogo+'"');
+            if (result) {
+                bus.$emit('pushAnswer', [0, this.inputForm])
+                this.$store.dispatch('confirmRes');
             }
         })
     },
     watch: {
         'inputForm.enquete2': function(v) {
+            // 全角数字を半角数字に
             this.inputForm.enquete2 = v.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) { return String.fromCharCode(s.charCodeAt(0) - 65248) })
         },
         inputForm: {
@@ -136,7 +147,7 @@ export default {
             deep: true
         },
         inputFormStatus: function(){
-            bus.$emit('changestat', this.inputFormStatus);
+            this.$store.commit('changestat', this.inputFormStatus);
         }
     }
 }
@@ -146,19 +157,15 @@ export default {
 #enquete-en {
     margin:0;
 }
-
 span {
     color:#d83027;
 }
-
 label {
     font-size:1.2rem;
 }
-
 input[type="radio"]{
     margin:8px;
 }
-
 .input-form {
     font-size:1rem;
     height:20px;
@@ -168,19 +175,15 @@ input[type="radio"]{
     border-radius:5px;
     border:1px solid #ccc;
 }
-
 .small-title {
     font-size:0.8rem;
 }
-
 .enquete-title {
     font-size:1.5rem;
 }
-
 .no-answer-input {
     background-color:#fce8e6;
 }
-
 .no-answer-message {
     color:#d83027;
 }
