@@ -40,7 +40,7 @@ http://localhost:8090/?query=demo
 ```
 
 ### Components structure
-![components](/public/components.png)
+![components](/public/fitb-app.png)
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
