@@ -47,8 +47,8 @@ export default {
   created(){
     const url = new URL(location.href);
     const query = url.searchParams.get("query");
-    // demo or s22525 or s22658 or ss22525 or ss22658 or val or all
-    const dataset = ["demo", "s22525", "s22658", "ss22525", "ss22658", "val", "all"]
+    // demo
+    const dataset = ["demo"]
     if (!dataset.includes(query)) {
       location.href = "error.html"
     } else {
