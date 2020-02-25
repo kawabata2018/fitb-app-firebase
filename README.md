@@ -19,6 +19,8 @@ var firebaseConfig = {
 };
 ```
 
+- For more details on Firebase, see https://firebase.google.com/docs/hosting/quickstart?hl=ja
+
 ### Compiles and minifies for production
 ```
 npm run build
